@@ -48,7 +48,7 @@ python3 {baseDir}/scripts/image_to_video.py ./photo.png "slow push-in, hair move
 
 # Text -> image(s)
 python3 {baseDir}/scripts/generate_image.py "isometric cozy coffee shop, soft morning light" \
-  --model nano-banana-pro --count 2 --aspect-ratio 1:1
+  --model flux-2-klein --count 1 --aspect-ratio 1:1
 
 # Poll a queued project
 python3 {baseDir}/scripts/status.py <project_id> --kind video --wait

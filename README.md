@@ -20,19 +20,19 @@ export MAGIC_HOUR_API_KEY=mhk_...   # free key: https://magichour.ai/developer
 S=skills/magic-hour/scripts
 python3 $S/text_to_video.py "a corgi surfing at golden hour" --model wan-2.2 --duration 5 --download-dir out
 python3 $S/image_to_video.py photo.png "slow push-in, wind in hair" --model kling-3.0 --resolution 720p
-python3 $S/generate_image.py "isometric cozy coffee shop" --model nano-banana-pro --count 2 --aspect-ratio 1:1
+python3 $S/generate_image.py "isometric cozy coffee shop" --model flux-2-klein --count 1 --aspect-ratio 1:1
 python3 $S/status.py <project_id> --kind video --wait
 # each prints: {"project_id": "...", "status": "complete", "url": "https://...", "credits_charged": 120, ...}
 ```
 
 ## Models
 
-| Video | Credits/sec | Notes |
-|---|---|---|
-| wan-2.2, ltx-2.3, minimax-h3 | 24 | free tier |
-| seedance-1.5 / kling-2.6 / kling-3.0 | 30 / 36 / 48 | |
-| veo3.1-lite / veo3.1 / veo3.1-audio | 48 / 96 / 96 | |
-| sora-2, seedance-2.x | 120 | 720p max |
+| Video                                | Credits/sec  | Notes     |
+| ------------------------------------ | ------------ | --------- |
+| wan-2.2, ltx-2.3, minimax-h3         | 24           | free tier |
+| seedance-1.5 / kling-2.6 / kling-3.0 | 30 / 36 / 48 |           |
+| veo3.1-lite / veo3.1 / veo3.1-audio  | 48 / 96 / 96 |           |
+| sora-2, seedance-2.x                 | 120          | 720p max  |
 
 Image: default, gpt-image-2, nano-banana-pro, seedream-5-pro, flux-2-klein, z-image-turbo, qwen-edit. Full table: [references/models.md](references/models.md).
 
