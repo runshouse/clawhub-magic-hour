@@ -83,9 +83,13 @@ Rules of thumb:
 
 ## Prompting tips
 
+- Before generation, define the intended use, aspect ratio, resolution, duration, composition or camera motion, must-preserve details, and failure conditions. Choose the model from the live schema for the behavior that matters most; when final quality is the priority, do not default to the cheapest or fastest option.
 - Video prompts: subject + action + camera move + lighting/style + mood, 1-3 sentences. Avoid listing many scenes for short clips.
+- For exact identity, product geometry, packaging, logos, or branded text, use an authorized reference image and an editing or image-to-video workflow instead of recreating the subject from text alone. Tell the model what must remain unchanged.
 - Rendering takes ~1-5 minutes for video, seconds for images. Output URLs expire after a while; download with `--download-dir` if the user needs the file.
 - If polling times out after a project ID was returned, resume that same project with `status.py`; do not create a replacement job. If creation times out before an ID is returned, reconcile it in the dashboard before retrying: the first request may already have created a paid job. For an explicit failed project, read `error.message`, correct the cause, and only submit another generation within the user's authorized credit budget.
+
+After download, inspect the output before calling it finished. For images, check composition, crop, anatomy, identity, requested text and logos, unintended lettering or brand-like marks, and visible artifacts. For video, also check the first and last frames, motion, temporal consistency, flicker, warping, and unwanted cuts. If a required criterion fails, state the failure and change the smallest useful input, prompt, model, or resolution within the authorized credit budget.
 
 ## References
 
