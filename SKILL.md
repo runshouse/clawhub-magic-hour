@@ -8,7 +8,12 @@ metadata:
     "openclaw":
       {
         "emoji": "🎬",
-        "requires": { "bins": ["python3"], "python": ["magic_hour"], "env": ["MAGIC_HOUR_API_KEY"] },
+        "requires":
+          {
+            "bins": ["python3"],
+            "python": ["magic_hour"],
+            "env": ["MAGIC_HOUR_API_KEY"],
+          },
         "primaryEnv": "MAGIC_HOUR_API_KEY",
       },
   }
@@ -20,7 +25,7 @@ One API key for many video/image models: Sora 2, Veo 3.1, Kling 3.0, Seedance, M
 
 ## Fastest route: hosted MCP server (zero install)
 
-Magic Hour runs a remote MCP server at `https://mcp.magichour.ai/` (docs: https://magichour.ai/mcp). If your agent can attach MCP servers, add it with header `Authorization: Bearer $MAGIC_HOUR_API_KEY` (Claude web/desktop uses OAuth, client id `magic-hour-mcp`). It exposes image, video and audio generation tools plus upload (`videoAssets_generatePresignedUrl`) and wait/status tools, so no local SDK is needed. The scripts below are the fallback for agents without MCP, or when you want plain JSON from a shell.
+Magic Hour runs a remote MCP server at `https://mcp.magichour.ai/` (docs: https://magichour.ai/mcp). If your agent can attach MCP servers, add it with header `Authorization: Bearer $MAGIC_HOUR_API_KEY` (Claude web/desktop uses OAuth, client id `magic-hour-mcp`). It exposes image, video and audio generation tools plus upload URL allocation (`video_assets_generate_presigned_url`) and wait/status tools, so no local SDK is needed. Discover the live input schemas before calling tools; clients may prefix their names. For a local input file, request an upload URL, upload its raw bytes with an HTTPS `PUT` from a runtime that can read the file, and pass the returned `file_path` to creation. Allocating the URL does not upload the file, and the hosted server cannot read a local filesystem path. The scripts below are the fallback for agents without MCP, or when you want plain JSON from a shell.
 
 ## Setup (script route)
 
@@ -51,20 +56,21 @@ python3 {baseDir}/scripts/status.py <project_id> --kind video --wait
 
 ## Choosing a video model
 
-| Model | Durations (s) | Credits/sec | Notes |
-|---|---|---|---|
-| `wan-2.2` | 3-10, 15 | 24 | FREE. Default. Cheap general-purpose clips. |
-| `ltx-2.3` | 1-10, 15, 20, 25, 30 | 24 | FREE. Longest free clips (30s). |
-| `minimax-h3` | 1-10, 15, 20, 25, 30 | 24 | FREE. Up to 1080p. |
-| `seedance-1.5` | 4-12 | 30 | Good value step up. |
-| `kling-2.6` | 5, 10 | 36 | |
-| `kling-3.0` | 3-15 | 48 | Best motion/physics for the price. |
-| `veo3.1-lite` | 4, 6, 8, 16...56 | 48 | |
-| `veo3.1` / `veo3.1-audio` | 4, 6, 8, 16...56 | 96 | Cinematic; `-audio` adds sound (`--audio`). |
-| `sora-2` | 4, 8, 12, 24, 36, 48, 60 | 120 | Complex multi-shot scenes. 720p max. |
-| `seedance-2.0-mini` / `2.0` / `2.5` | 4-15 / 4-15 / 4-30 | 96 / 120 / 120 | 720p max. |
+| Model                               | Durations (s)            | Credits/sec    | Notes                                       |
+| ----------------------------------- | ------------------------ | -------------- | ------------------------------------------- |
+| `wan-2.2`                           | 3-10, 15                 | 24             | FREE. Default. Cheap general-purpose clips. |
+| `ltx-2.3`                           | 1-10, 15, 20, 25, 30     | 24             | FREE. Longest free clips (30s).             |
+| `minimax-h3`                        | 1-10, 15, 20, 25, 30     | 24             | FREE. Up to 1080p.                          |
+| `seedance-1.5`                      | 4-12                     | 30             | Good value step up.                         |
+| `kling-2.6`                         | 5, 10                    | 36             |                                             |
+| `kling-3.0`                         | 3-15                     | 48             | Best motion/physics for the price.          |
+| `veo3.1-lite`                       | 4, 6, 8, 16...56         | 48             |                                             |
+| `veo3.1` / `veo3.1-audio`           | 4, 6, 8, 16...56         | 96             | Cinematic; `-audio` adds sound (`--audio`). |
+| `sora-2`                            | 4, 8, 12, 24, 36, 48, 60 | 120            | Complex multi-shot scenes. 720p max.        |
+| `seedance-2.0-mini` / `2.0` / `2.5` | 4-15 / 4-15 / 4-30       | 96 / 120 / 120 | 720p max.                                   |
 
 Rules of thumb:
+
 - Cost = credits/sec x duration (e.g. kling-3.0 5s = 240). Failed jobs are auto-refunded. Tell the user the estimated cost before spending more than ~500 credits.
 - Stay on `wan-2.2` / `ltx-2.3` / `minimax-h3` unless the user asks for quality or has a paid plan; the free tier is ~100 credits/day.
 - Duration must be in the model's allowed list or the API rejects the job. The scripts warn on stderr if it is not.
@@ -73,13 +79,13 @@ Rules of thumb:
 
 ## Image models
 
-`default` (good all-rounder), `gpt-image-2` (text rendering, instructions), `nano-banana-pro` (photoreal, editing), `seedream-5-pro`, `flux-2-klein` (fast), `z-image-turbo` (fastest), `qwen-edit` (edits). Images are cheap (roughly 5-50 credits each depending on model).
+`default` (good all-rounder), `gpt-image-2` (text rendering, instructions), `nano-banana-pro` (photoreal, editing), `seedream-5-pro`, `flux-2-klein` (fast), `z-image-turbo` (fastest), `qwen-edit` (edits). Image cost varies by model, resolution, and count; check the current endpoint documentation or live MCP schema before quoting or spending credits. Do not assume 50 credits is an upper bound.
 
 ## Prompting tips
 
 - Video prompts: subject + action + camera move + lighting/style + mood, 1-3 sentences. Avoid listing many scenes for short clips.
 - Rendering takes ~1-5 minutes for video, seconds for images. Output URLs expire after a while; download with `--download-dir` if the user needs the file.
-- If `status` is `error`, read `error.message`, fix the request (usually duration/resolution/model), and retry once.
+- If polling times out after a project ID was returned, resume that same project with `status.py`; do not create a replacement job. If creation times out before an ID is returned, reconcile it in the dashboard before retrying: the first request may already have created a paid job. For an explicit failed project, read `error.message`, correct the cause, and only submit another generation within the user's authorized credit budget.
 
 ## References
 
