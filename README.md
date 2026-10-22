@@ -14,6 +14,8 @@ pip install magic_hour
 export MAGIC_HOUR_API_KEY=mhk_...   # free key: https://magichour.ai/developer
 ```
 
+Prompts, generation settings, and selected images are sent to Magic Hour for processing. Only pass inputs authorized for that purpose; local images are uploaded automatically. See the [data and file scope](SKILL.md#data-and-file-scope) and [privacy policy](https://magichour.ai/privacy).
+
 ## Quickstart (scripts work standalone too)
 
 ```bash

@@ -2,6 +2,8 @@
 
 Base URL: `https://api.magichour.ai/v1`. Auth header: `Authorization: Bearer $MAGIC_HOUR_API_KEY`. All bodies are JSON.
 
+Requests send prompts, generation settings, and selected media to Magic Hour. Use only user-authorized inputs, exclude unrelated context or private files, and keep the API key out of prompts and logs. See [data and file scope](../SKILL.md#data-and-file-scope) and [Magic Hour's privacy policy](https://magichour.ai/privacy).
+
 ## Create jobs
 
 | Endpoint | Body | Returns |
@@ -20,6 +22,8 @@ Base URL: `https://api.magichour.ai/v1`. Auth header: `Authorization: Bearer $MA
 Poll every ~5 seconds until `status` is `complete` or `error`. Failed jobs auto-refund credits.
 
 ## Upload a local image
+
+Upload only the image the user selected for remote processing, never directories or substitute files. Keep the Magic Hour bearer token on Magic Hour API requests; do not attach it to the presigned `PUT` request.
 
 1. `POST /v1/files/upload-urls` body `{"items":[{"extension":"png","type":"image"}]}` -> `{items:[{upload_url, file_path}]}`
 2. `PUT` the raw bytes to `upload_url`.

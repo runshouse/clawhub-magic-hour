@@ -23,6 +23,12 @@ metadata:
 
 One API key for many video/image models: Sora 2, Veo 3.1, Kling 3.0, Seedance, MiniMax H3, WAN 2.2, LTX 2.3 (video) and GPT-image, Nano Banana Pro, Seedream, Flux, Z-Image (image). Jobs are async; the scripts below submit, poll every ~5s, and print a single JSON line when done.
 
+## Data and file scope
+
+Generation sends the authorized prompt, generation settings, and selected media to Magic Hour for remote processing. Use only inputs the user has authorized for that purpose; do not include unrelated chat history, project data, credentials, or private files. Ask before uploading only when the selected file or permission is unclear.
+
+For image-to-video, the SDK automatically uploads the local path supplied to the script. Pass only the explicitly selected PNG, JPEG, or WebP image; never search for substitute files or upload directories. The script checks that a path exists, not that its contents are a valid image. Read `MAGIC_HOUR_API_KEY` only for Magic Hour authentication, keep it out of prompts and logs, and save downloads only in the user-selected output directory. See [Magic Hour's privacy policy](https://magichour.ai/privacy) for data handling; do not promise local-only processing or immediate deletion.
+
 ## Fastest route: hosted MCP server (zero install)
 
 Magic Hour runs a remote MCP server at `https://mcp.magichour.ai/` (docs: https://magichour.ai/mcp). If your agent can attach MCP servers, add it with header `Authorization: Bearer $MAGIC_HOUR_API_KEY` (Claude web/desktop uses OAuth, client id `magic-hour-mcp`). It exposes image, video and audio generation tools plus upload URL allocation (`video_assets_generate_presigned_url`) and wait/status tools, so no local SDK is needed. Discover the live input schemas before calling tools; clients may prefix their names. For a local input file, request an upload URL, upload its raw bytes with an HTTPS `PUT` from a runtime that can read the file, and pass the returned `file_path` to creation. Allocating the URL does not upload the file, and the hosted server cannot read a local filesystem path. The scripts below are the fallback for agents without MCP, or when you want plain JSON from a shell.
@@ -42,7 +48,7 @@ All scripts print one JSON object to stdout: `{project_id, status, model, url, u
 python3 {baseDir}/scripts/text_to_video.py "a corgi surfing at golden hour, slow-motion, cinematic" \
   --model wan-2.2 --duration 5 --resolution 480p --aspect-ratio 16:9 --download-dir ./out
 
-# Image -> video (local file is uploaded automatically; public https URL also works)
+# Image -> video (uploads the explicitly selected image to Magic Hour; public https URL also works)
 python3 {baseDir}/scripts/image_to_video.py ./photo.png "slow push-in, hair moves in the wind" \
   --model kling-3.0 --duration 5 --resolution 720p
 
