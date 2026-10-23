@@ -84,7 +84,7 @@ def test_image_to_video_url_and_local(fake_sdk, capsys, tmp_path):
     assert fake_sdk[-1]["assets"] == {"image_file_path": "https://example.com/a.png"}
 
     img = tmp_path / "pic.png"
-    img.write_bytes(b"\x89PNG")
+    img.write_bytes(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\x0cIDATx\x9cc```\x00\x00\x00\x04\x00\x01\xf6\x178U\x00\x00\x00\x00IEND\xaeB`\x82')
     run(capsys, image_to_video.main, [str(img), "pan", "--download-dir", str(tmp_path / "o")])
     assert fake_sdk[-1]["assets"]["image_file_path"] == str(img)
     assert fake_sdk[-1]["download_directory"] == str(tmp_path / "o")

@@ -11,7 +11,7 @@ metadata:
         "requires":
           {
             "bins": ["python3"],
-            "python": ["magic_hour"],
+            "python": ["magic_hour", "PIL"],
             "env": ["MAGIC_HOUR_API_KEY"],
           },
         "primaryEnv": "MAGIC_HOUR_API_KEY",
@@ -27,7 +27,7 @@ One API key for many video/image models: Sora 2, Veo 3.1, Kling 3.0, Seedance, M
 
 Generation sends the authorized prompt, generation settings, and selected media to Magic Hour for remote processing. Use only inputs the user has authorized for that purpose; do not include unrelated chat history, project data, credentials, or private files. Ask before uploading only when the selected file or permission is unclear.
 
-For image-to-video, the SDK automatically uploads the local path supplied to the script. Pass only the explicitly selected PNG, JPEG, or WebP image; never search for substitute files or upload directories. The script checks that a path exists, not that its contents are a valid image. Read `MAGIC_HOUR_API_KEY` only for Magic Hour authentication, keep it out of prompts and logs, and save downloads only in the user-selected output directory. See [Magic Hour's privacy policy](https://magichour.ai/privacy) for data handling; do not promise local-only processing or immediate deletion.
+For image-to-video, the SDK automatically uploads the local path supplied to the script. Pass only the explicitly selected PNG, JPEG, or WebP image; never search for substitute files or upload directories. Before creating a client, the script rejects image-file symlinks, non-regular or empty files, files over 20 MiB, unsupported extensions, corrupt images, and Pillow decompression-bomb warnings/errors. Pillow verifies and decodes PNG, JPEG, or WebP content matching the extension. The 20 MiB cap is this helper's local policy, not a Magic Hour API limit. Public HTTPS URLs and existing `api-assets/` paths pass through without local content validation; HTTP URLs are rejected. Read `MAGIC_HOUR_API_KEY` only for Magic Hour authentication, keep it out of prompts and logs, and save downloads only in the user-selected output directory. See [Magic Hour's privacy policy](https://magichour.ai/privacy) for data handling; do not promise local-only processing or immediate deletion.
 
 ## Fastest route: hosted MCP server (zero install)
 
@@ -37,7 +37,7 @@ Magic Hour runs a remote MCP server at `https://mcp.magichour.ai/` (docs: https:
 
 1. Free key (400 credits on signup + 100/day, no card): https://magichour.ai/developer
 2. `export MAGIC_HOUR_API_KEY=mhk_...`
-3. `pip install magic_hour==0.89.0` (official SDK, Python >= 3.10)
+3. `pip install magic_hour==0.89.0 Pillow==12.3.0` (official SDK, Python >= 3.10)
 
 ## Scripts
 
