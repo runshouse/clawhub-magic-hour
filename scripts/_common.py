@@ -36,8 +36,8 @@ VIDEO_MODELS: Dict[str, Dict[str, Any]] = {
 }
 
 IMAGE_MODELS = [
-    "default", "gpt-image-2", "nano-banana-pro", "seedream-5-pro",
-    "flux-2-klein", "z-image-turbo", "qwen-edit",
+    "default", "gpt-image-2", "nano-banana-pro", "seedream-v5-pro",
+    "flux-2-klein", "z-image-turbo", "qwen-image-2.1",
 ]
 
 
@@ -51,7 +51,7 @@ def get_client(api_key: Optional[str] = None, timeout: Optional[float] = None):
     try:
         from magic_hour import Client
     except ImportError:
-        fail("magic_hour SDK not installed. Run: pip install magic_hour")
+        fail("magic_hour SDK not installed. Run: pip install magic_hour==0.89.0")
     kwargs: Dict[str, Any] = {"token": key}
     if timeout is not None:
         kwargs["timeout"] = timeout

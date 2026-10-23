@@ -39,7 +39,7 @@ until curl -s https://api.magichour.ai/v1/video-projects/$ID -H "Authorization: 
 curl -s https://api.magichour.ai/v1/video-projects/$ID -H "Authorization: Bearer $MAGIC_HOUR_API_KEY" | jq '{status, url: .downloads[0].url, credits_charged}'
 ```
 
-## Python SDK equivalents (magic_hour >= 0.75)
+## Python SDK equivalents (magic_hour == 0.89.0, Python >= 3.10)
 
 ```python
 from magic_hour import Client
@@ -50,4 +50,4 @@ r.id, r.status, r.downloads[0].url, r.credits_charged
 client.v1.image_to_video.generate(assets={"image_file_path": "photo.png"}, end_seconds=5, style={"prompt": "..."}, model="kling-3.0", resolution="720p")
 client.v1.ai_image_generator.generate(image_count=1, style={"prompt": "..."}, model="default", aspect_ratio="1:1")
 ```
-Pass `model` as a plain string; the SDK's Literal types lag the live catalogue.
+Use model IDs supported by both the current endpoint schema and the pinned SDK. The SDK validates model enums before sending requests; passing a plain string does not bypass that validation.

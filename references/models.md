@@ -29,10 +29,10 @@ Example costs: wan-2.2 5s = 120; kling-3.0 10s = 480; veo3.1 8s = 768; sora-2 12
 | default | Magic Hour's balanced default |
 | gpt-image-2 | best text rendering and instruction following |
 | nano-banana-pro | photoreal, strong at edits/consistency |
-| seedream-5-pro | high aesthetic quality |
+| seedream-v5-pro | high aesthetic quality |
 | flux-2-klein | fast |
 | z-image-turbo | fastest/cheapest |
-| qwen-edit | image editing |
+| qwen-image-2.1 | image editing |
 
 `aspect_ratio`: 16:9, 9:16, 1:1. `image_count`: 1-4.
 

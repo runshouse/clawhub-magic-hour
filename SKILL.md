@@ -37,7 +37,7 @@ Magic Hour runs a remote MCP server at `https://mcp.magichour.ai/` (docs: https:
 
 1. Free key (400 credits on signup + 100/day, no card): https://magichour.ai/developer
 2. `export MAGIC_HOUR_API_KEY=mhk_...`
-3. `pip install magic_hour` (official SDK, Python >= 3.9)
+3. `pip install magic_hour==0.89.0` (official SDK, Python >= 3.10)
 
 ## Scripts
 
@@ -85,7 +85,7 @@ Rules of thumb:
 
 ## Image models
 
-`default` (good all-rounder), `gpt-image-2` (text rendering, instructions), `nano-banana-pro` (photoreal, editing), `seedream-5-pro`, `flux-2-klein` (fast), `z-image-turbo` (fastest), `qwen-edit` (edits). Image cost varies by model, resolution, and count; check the current endpoint documentation or live MCP schema before quoting or spending credits. Do not assume 50 credits is an upper bound.
+`default` (good all-rounder), `gpt-image-2` (text rendering, instructions), `nano-banana-pro` (photoreal, editing), `seedream-v5-pro`, `flux-2-klein` (fast), `z-image-turbo` (fastest), `qwen-image-2.1` (edits). Image cost varies by model, resolution, and count; check the current endpoint documentation or live MCP schema before quoting or spending credits. Do not assume 50 credits is an upper bound.
 
 ## Prompting tips
 

@@ -10,7 +10,7 @@ Magic Hour also runs a hosted MCP server at `https://mcp.magichour.ai/` (docs: h
 
 ```bash
 npx clawhub@latest install magic-hour
-pip install magic_hour
+pip install magic_hour==0.89.0
 export MAGIC_HOUR_API_KEY=mhk_...   # free key: https://magichour.ai/developer
 ```
 
@@ -36,14 +36,14 @@ python3 $S/status.py <project_id> --kind video --wait
 | veo3.1-lite / veo3.1 / veo3.1-audio  | 48 / 96 / 96 |           |
 | sora-2, seedance-2.x                 | 120          | 720p max  |
 
-Image: default, gpt-image-2, nano-banana-pro, seedream-5-pro, flux-2-klein, z-image-turbo, qwen-edit. Full table: [references/models.md](references/models.md).
+Image: default, gpt-image-2, nano-banana-pro, seedream-v5-pro, flux-2-klein, z-image-turbo, qwen-image-2.1. Full table: [references/models.md](references/models.md).
 
 ## Layout
 
 - `SKILL.md` - agent instructions (frontmatter gates on `MAGIC_HOUR_API_KEY`, `python3`, `magic_hour`)
 - `scripts/` - argparse CLIs printing JSON
 - `references/` - raw HTTP API + model catalogue
-- `tests/` - offline pytest (SDK mocked): `uv run --with pytest --with magic_hour pytest`
+- `tests/` - offline pytest (SDK mocked): `uv run --with pytest --with magic_hour==0.89.0 pytest`
 
 ## Links
 
